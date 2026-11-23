@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101c29">
+<title>MR PEWNIAK</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#101c29;color:#f4f7fa;
+ font-family:Arial,sans-serif;padding-bottom:85px
+}
+header{padding:24px 20px 12px}
+.logo{font-size:25px;font-weight:900;letter-spacing:1px}
+.logo span{color:#54d99b}
+.sub{color:#91a4b6;font-size:12px;margin-top:6px}
+main{padding:12px 18px}
+h1{font-size:25px;margin:10px 0}
+h2{font-size:17px;margin:8px 0 14px}
+p{color:#9eafbf;font-size:13px;line-height:1.5}
+.tabs{display:flex;gap:10px;margin:20px 0}
+button{
+ border:0;border-radius:12px;padding:13px;
+ background:#203344;color:white;font-weight:bold;
+ cursor:pointer
+}
+.tabs button{flex:1}
+button.active{background:#237d5b}
+.card{
+ background:#1b2b3a;border:1px solid #2b4052;
+ border-radius:16px;padding:16px;margin:12px 0
+}
+.tag{color:#54d99b;font-size:11px;font-weight:bold}
+.match{font-size:16px;font-weight:bold;margin:12px 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#263a4b;border-radius:12px;padding:12px}
+.stat strong{display:block;font-size:21px;margin-bottom:5px}
+.stat small{color:#9eafbf}
+.hidden{display:none}
+input{
+ width:100%;padding:14px;border-radius:12px;
+ border:1px solid #405568;background:#1b2b3a;
+ color:white;font-size:15px;margin:10px 0
+}
+nav{
+ position:fixed;bottom:0;left:0;right:0;
+ display:flex;justify-content:space-around;
+ background:#172635;border-top:1px solid #344657;
+ padding:15px 5px calc(15px + env(safe-area-inset-bottom));
+}
+nav button{background:transparent;color:#9eafbf;font-size:12px}
+nav button.active{color:#54d99b;background:transparent}
+footer{padding:20px;color:#8296a8;font-size:11px;text-align:center}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">MR <span>PEWNIAK</span></div>
+ <div class="sub">SPORT ANALYTICS • WERSJA 0.1</div>
+</header>
+
+<main>
+<section id="home">
+ <h1>Centrum analiz</h1>
+ <p>Analizuj statystyki piłki nożnej i tenisa w jednym miejscu.</p>
+ <div class="tabs">
+  <button class="active" onclick="showSport('football',this)">⚽ Piłka nożna</button>
+  <button onclick="showSport('tennis',this)">🎾 Tenis</button>
+ </div>
+
+ <div id="football">
+  <h2>Moduł piłkarski</h2>
+  <div class="card">
+   <span class="tag">DANE DEMONSTRACYJNE</span>
+   <div class="match">Real Madryt – Barcelona</div>
+   <p>Przykładowe statystyki spotkania</p>
+   <div class="stats">
+    <div class="stat"><strong>2.1</strong><small>Średnia goli – drużyna A</small></div>
+    <div class="stat"><strong>1.4</strong><small>Średnia goli – drużyna B</small></div>
+    <div class="stat"><strong>58%</strong><small>Posiadanie piłki A</small></div>
+    <div class="stat"><strong>42%</strong><small>Posiadanie piłki B</small></div>
+   </div>
+  </div>
+ </div>
+
+ <div id="tennis" class="hidden">
+  <h2>Moduł tenisowy</h2>
+  <div class="card">
+   <span class="tag">DANE DEMONSTRACYJNE</span>
+   <div class="match">Djokovic – Sinner</div>
+   <p>Przykładowe statystyki zawodników</p>
+   <div class="stats">
+    <div class="stat"><strong>68%</strong><small>Pierwszy serwis A</small></div>
+    <div class="stat"><strong>72%</strong><small>Pierwszy serwis B</small></div>
+    <div class="stat"><strong>81%</strong><small>Punkty po 1. serwisie A</small></div>
+    <div class="stat"><strong>77%</strong><small>Punkty po 1. serwisie B</small></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="analysis" class="hidden">
+ <h1>Analiza spotkania</h1>
+ <p>Wybierz dyscyplinę i wpisz nazwę zawodnika lub drużyny.</p>
+ <input id="team" placeholder="Wpisz nazwę drużyny lub zawodnika">
+ <button style="width:100%" onclick="analyze()">Przygotuj analizę</button>
+ <div class="card" id="result">
+  <p>Raport pojawi się tutaj po uruchomieniu analizy.</p>
+ </div>
+</section>
+
+<section id="about" class="hidden">
+ <h1>O aplikacji</h1>
+ <div class="card">
+  <h2>MR PEWNIAK</h2>
+  <p>Platforma do edukacyjnej analizy danych sportowych.</p>
+  <p>Wersja: 0.1</p>
+  <p>Status: prototyp</p>
+ </div>
+</section>
+</main>
+
+<nav>
+ <button class="active" onclick="page('home',this)">⌂<br>Start</button>
+ <button onclick="page('analysis',this)">▤<br>Analiza</button>
+ <button onclick="page('about',this)">ⓘ<br>O aplikacji</button>
+</nav>
+
+<footer>
+MR PEWNIAK © 2026<br>
+Dane przykładowe – nie są aktualnymi statystykami.
+</footer>
+
+<script>
+function page(id,btn){
+ document.querySelectorAll('main section').forEach(
+  el=>el.classList.add('hidden')
+ );
+ document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('nav button').forEach(
+  el=>el.classList.remove('active')
+ );
+ btn.classList.add('active');
+}
+function showSport(id,btn){
+ document.getElementById('football').classList.add('hidden');
+ document.getElementById('tennis').classList.add('hidden');
+ document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('.tabs button').forEach(
+  el=>el.classList.remove('active')
+ );
+ btn.classList.add('active');
+}
+function analyze(){
+ const name=document.getElementById('team').value.trim();
+ const result=document.getElementById('result');
+ if(!name){
+  result.innerHTML='<p>Najpierw wpisz nazwę drużyny lub zawodnika.</p>';
+  return;
+ }
+ result.innerHTML='<h2>'+escapeHTML(name)+'</h2>'+
+ '<p>Moduł demonstracyjny działa poprawnie.</p>'+
+ '<p>Po podłączeniu źródła danych pojawią się tutaj '+
+ 'rzeczywiste statystyki, historia spotkań i raport analityczny.</p>'+
+ '<span class="tag">OCZEKIWANIE NA DANE</span>';
+}
+function escapeHTML(value){
+ return value.replace(/[&<>"']/g,c=>({
+ '&':'&amp;','<':'&lt;','>':'&gt;',
+ '"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+</script>
+</body>
+</html>
